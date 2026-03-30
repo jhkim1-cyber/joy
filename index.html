@@ -568,29 +568,29 @@ html[data-theme="dark"] .done-card{background:rgba(16,185,129,.08);}
         <div class="r-panel">
           <!-- KPI 4개 (세로 2열) -->
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-            <div class="kpi-card" style="padding:13px 14px;" onclick="goPage('pg-kpi','리뷰 분석 리포트','📊 KPI 상세')">
+            <div class="kpi-card" style="padding:13px 14px;" onclick="openKpiModal()">
               <div class="kpi-lbl"><div class="kpi-dot" style="background:#F59E0B;"></div>이번 달 평균 별점</div>
               <div class="kpi-val" style="color:#F59E0B;font-size:20px;">4.6</div>
               <span class="kpi-badge" style="background:var(--ok-bg);color:var(--ok);">▲ +0.3</span>
             </div>
-            <div class="kpi-card" style="padding:13px 14px;" onclick="goPage('pg-kpi','리뷰 분석 리포트','📊 KPI 상세')">
+            <div class="kpi-card" style="padding:13px 14px;" onclick="openKpiModal()">
               <div class="kpi-lbl"><div class="kpi-dot" style="background:var(--pri);"></div>총 리뷰 수</div>
               <div class="kpi-val" style="font-size:20px;">284</div>
               <span class="kpi-badge" style="background:var(--pri-l);color:var(--pri);">+38건</span>
             </div>
-            <div class="kpi-card" style="padding:13px 14px;" onclick="goPage('pg-kpi','리뷰 분석 리포트','📊 KPI 상세')">
+            <div class="kpi-card" style="padding:13px 14px;" onclick="openKpiModal()">
               <div class="kpi-lbl"><div class="kpi-dot" style="background:var(--ok);"></div>AI 답글 완료율</div>
               <div class="kpi-val" style="color:var(--ok);font-size:20px;">94%</div>
               <span class="kpi-badge" style="background:var(--err-bg);color:var(--err);">미응답 3건</span>
             </div>
-            <div class="kpi-card" style="padding:13px 14px;" onclick="goPage('pg-kpi','리뷰 분석 리포트','📊 KPI 상세')">
+            <div class="kpi-card" style="padding:13px 14px;" onclick="openKpiModal()">
               <div class="kpi-lbl"><div class="kpi-dot" style="background:#8B5CF6;"></div>부정 전환율</div>
               <div class="kpi-val" style="color:#8B5CF6;font-size:20px;">67%</div>
               <span class="kpi-badge" style="background:#F3F0FF;color:#8B5CF6;">+22%↑</span>
             </div>
           </div>
 
-          <div class="panel" style="cursor:pointer;" onclick="goPage('pg-score','채널별 종합 점수','📊 상세 분석')">
+          <div class="panel" style="cursor:pointer;" onclick="openScoreModal()">
             <div class="pt"><span>📊</span>채널별 종합 점수 <span style="margin-left:auto;font-size:10px;color:var(--pri);font-weight:600;">상세보기 →</span></div>
             <div class="sc-wrap">
               <div class="sc-circ"><canvas id="scoreChart" width="76" height="76"></canvas><div class="sc-ctr"><div class="sc-num">4.6</div><div class="sc-sub">종합</div></div></div>
@@ -619,7 +619,7 @@ html[data-theme="dark"] .done-card{background:rgba(16,185,129,.08);}
               <div class="st-box"><div class="st-l">긍정 리뷰</div><div class="st-v">38</div><div class="st-s" style="color:var(--tx3);">4점 이상</div></div>
               <div class="st-box"><div class="st-l">부정 리뷰</div><div class="st-v" style="color:var(--err);">9</div><div class="st-s" style="color:var(--tx3);">2점 이하</div></div>
             </div>
-            <button class="btn" style="width:100%;margin-top:11px;font-size:11px;" onclick="goPage('pg-kpi','리뷰 분석 리포트','📊')">📊 전체 분석 리포트</button>
+            <button class="btn" style="width:100%;margin-top:11px;font-size:11px;" onclick="openKpiModal()">📊 전체 분석 리포트</button>
           </div>
           <div class="panel">
             <div class="pt"><span>🎁</span>리뷰 유도 이벤트</div>
@@ -630,9 +630,17 @@ html[data-theme="dark"] .done-card{background:rgba(16,185,129,.08);}
       </div>
     </div><!-- /pg-list -->
 
-    <!-- ══════ PAGE: 채널별 종합 점수 상세 ══════ -->
-    <div class="page slide-right" id="pg-score" style="overflow-y:auto;padding:20px 24px;gap:14px;">
-      <div style="display:flex;flex-direction:column;gap:16px;padding-bottom:24px;">
+    <!-- ══════ 채널별 종합 점수 팝업 ══════ -->
+    <div class="alert-wrap" id="scoreModal" style="z-index:800;align-items:center;justify-content:center;padding:16px;">
+      <div style="background:var(--bg);border-radius:20px;width:100%;max-width:1000px;height:88vh;display:flex;flex-direction:column;box-shadow:var(--sh2);overflow:hidden;animation:popIn .25s cubic-bezier(.34,1.56,.64,1);">
+        <!-- 헤더 -->
+        <div style="background:var(--sur);border-bottom:1px solid var(--bdr);padding:0 20px;height:46px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-radius:20px 20px 0 0;">
+          <div style="font-size:14px;font-weight:800;color:var(--tx);">📊 채널별 종합 점수 상세</div>
+          <button onclick="closeScoreModal()" style="width:28px;height:28px;border-radius:8px;border:1px solid var(--bdr);background:transparent;cursor:pointer;font-size:15px;color:var(--tx3);display:flex;align-items:center;justify-content:center;">✕</button>
+        </div>
+        <!-- 콘텐츠 -->
+        <div style="flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:16px;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent;">
+          <div style="display:flex;flex-direction:column;gap:16px;padding-bottom:8px;" id="scoreModalContent">
 
         <!-- 상단 종합 요약 -->
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
@@ -790,7 +798,10 @@ html[data-theme="dark"] .done-card{background:rgba(16,185,129,.08);}
         </div>
 
       </div>
-    </div><!-- /pg-score -->
+        </div><!-- /scoreModalContent -->
+        </div><!-- /scroll -->
+      </div>
+    </div><!-- /scoreModal -->
 
     <!-- ══════ PAGE 1: 리뷰 상세 ══════ -->
     <!-- ══════ 리뷰 상세 팝업 모달 ══════ -->
@@ -814,12 +825,22 @@ html[data-theme="dark"] .done-card{background:rgba(16,185,129,.08);}
       </div>
     </div>
 
-    <!-- ══════ PAGE 2: KPI 상세 ══════ -->
-    <div class="page slide-right" id="pg-kpi" style="overflow-y:auto;padding:20px 24px;gap:14px;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;">
-        <div style="font-size:11px;color:var(--tx3);">2026년 2월 · AI 자동 분석 리포트</div>
-        <button class="btn" onclick="toast('📄 PDF 내보내기')">📄 내보내기</button>
-      </div>
+    <!-- ══════ PAGE 2: KPI 상세 팝업 ══════ -->
+    <div class="alert-wrap" id="kpiModal" style="z-index:800;align-items:center;justify-content:center;padding:16px;">
+      <div style="background:var(--bg);border-radius:20px;width:100%;max-width:980px;height:88vh;display:flex;flex-direction:column;box-shadow:var(--sh2);overflow:hidden;animation:popIn .25s cubic-bezier(.34,1.56,.64,1);">
+        <!-- 헤더 -->
+        <div style="background:var(--sur);border-bottom:1px solid var(--bdr);padding:0 20px;height:46px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;border-radius:20px 20px 0 0;">
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="font-size:14px;font-weight:800;color:var(--tx);">📊 리뷰 분석 리포트</div>
+            <span style="font-size:10px;color:var(--tx3);">2026년 2월 · AI 자동 분석</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;">
+            <button class="btn" onclick="toast('📄 PDF 내보내기')" style="font-size:11px;">📄 내보내기</button>
+            <button onclick="closeKpiModal()" style="width:28px;height:28px;border-radius:8px;border:1px solid var(--bdr);background:transparent;cursor:pointer;font-size:15px;color:var(--tx3);display:flex;align-items:center;justify-content:center;">✕</button>
+          </div>
+        </div>
+        <!-- 콘텐츠 -->
+        <div style="flex:1;overflow-y:auto;padding:20px 24px;display:flex;flex-direction:column;gap:16px;scrollbar-width:thin;scrollbar-color:var(--bdr) transparent;">
       <!-- 요약 카드 -->
       <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
         <div style="background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r);padding:16px;text-align:center;box-shadow:var(--sh0);"><div style="font-size:9px;color:var(--tx3);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;">이달 별점</div><div style="font-size:28px;font-weight:900;color:#F59E0B;">4.6</div><div style="font-size:10px;color:var(--ok);margin-top:4px;">▲ +0.3 향상</div></div>
@@ -853,8 +874,10 @@ html[data-theme="dark"] .done-card{background:rgba(16,185,129,.08);}
         </div>
       </div>
     </div>
+        </div><!-- /kpi scroll -->
+      </div>
+    </div><!-- /kpiModal -->
 
-    <!-- ══════ PAGE 3: AI 설정 ══════ -->
     <!-- ══════ AI 설정 팝업 모달 ══════ -->
     <div class="alert-wrap" id="configModal" style="z-index:800;align-items:center;justify-content:center;padding:16px;">
       <div style="background:var(--sur);border-radius:20px;width:100%;max-width:560px;max-height:88vh;display:flex;flex-direction:column;box-shadow:var(--sh2);overflow:hidden;animation:popIn .25s cubic-bezier(.34,1.56,.64,1);">
@@ -2144,6 +2167,25 @@ function saveConfig(){
   closeConfigModal();
 }
 
+function openScoreModal(){
+  document.getElementById('ov').classList.add('on');
+  document.getElementById('scoreModal').classList.add('on');
+  setTimeout(renderScoreCharts, 50);
+}
+function closeScoreModal(){
+  document.getElementById('scoreModal').classList.remove('on');
+  document.getElementById('ov').classList.remove('on');
+}
+function openKpiModal(){
+  document.getElementById('ov').classList.add('on');
+  document.getElementById('kpiModal').classList.add('on');
+  setTimeout(renderKpiCharts, 50);
+}
+function closeKpiModal(){
+  document.getElementById('kpiModal').classList.remove('on');
+  document.getElementById('ov').classList.remove('on');
+}
+
 function openConfigModal(){
   // 스텝 초기화
   cfgNext(1);
@@ -2178,6 +2220,8 @@ function closeBs(id){document.getElementById(id).classList.remove('on');document
 function onOverlayClick(){
   if(document.getElementById('detailModal').classList.contains('on')) return;
   if(document.getElementById('configModal').classList.contains('on')) return;
+  if(document.getElementById('scoreModal')?.classList.contains('on')) { closeScoreModal(); return; }
+  if(document.getElementById('kpiModal')?.classList.contains('on')) { closeKpiModal(); return; }
   closeAll();
 }
 function openNotif(){document.getElementById('ndot').style.display='none';openBs('bs-notif');}
@@ -2226,17 +2270,16 @@ function updKwCnt(){document.getElementById('kwCnt').textContent='('+document.qu
 function kwPreset(kw){document.getElementById('kwInp').value=kw;prepKw();}
 
 /* ══ 채널별 점수 상세 차트 ══ */
-let scoreChartsRendered = false;
+let scoreChartInstances = [];
 function renderScoreCharts() {
-  if (scoreChartsRendered) return;
-  scoreChartsRendered = true;
+  scoreChartInstances.forEach(function(ch){ try{ ch.destroy(); }catch(e){} });
+  scoreChartInstances = [];
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   const gc = isDark ? 'rgba(255,255,255,.06)' : 'rgba(0,0,0,.05)';
   const lc = isDark ? '#64748B' : '#9CA3AF';
   const months = ['9월','10월','11월','12월','1월','2월'];
 
-  // 종합 점수 추이
-  new Chart(document.getElementById('scoreTrendChart'), {
+  scoreChartInstances.push(new Chart(document.getElementById('scoreTrendChart'), {
     type: 'line',
     data: {
       labels: months,
@@ -2247,31 +2290,23 @@ function renderScoreCharts() {
       ]
     },
     options: { plugins:{ legend:{ labels:{ font:{size:10}, color:lc, boxWidth:12, padding:8 } } }, scales:{ y:{ min:3.5, max:5, grid:{color:gc}, ticks:{color:lc,font:{size:9}} }, x:{ grid:{display:false}, ticks:{color:lc,font:{size:9}} } } }
-  });
-
-  // 배민 별점 분포 도넛
-  new Chart(document.getElementById('bmChart'), {
+  }));
+  scoreChartInstances.push(new Chart(document.getElementById('bmChart'), {
     type:'doughnut',
     data:{ labels:['5점','4점','3점','2점','1점'], datasets:[{ data:[98,42,14,10,4], backgroundColor:['#10B981','#60D394','#F59E0B','#FB923C','#EF4444'], borderWidth:0 }] },
     options:{ cutout:'65%', plugins:{ legend:{ position:'right', labels:{ font:{size:9}, color:lc, padding:6, boxWidth:10 } } } }
-  });
-
-  // 쿠팡이츠 별점 분포 도넛
-  new Chart(document.getElementById('cpChart'), {
+  }));
+  scoreChartInstances.push(new Chart(document.getElementById('cpChart'), {
     type:'doughnut',
     data:{ labels:['5점','4점','3점','2점','1점'], datasets:[{ data:[38,22,10,8,4], backgroundColor:['#10B981','#60D394','#F59E0B','#FB923C','#EF4444'], borderWidth:0 }] },
     options:{ cutout:'65%', plugins:{ legend:{ position:'right', labels:{ font:{size:9}, color:lc, padding:6, boxWidth:10 } } } }
-  });
-
-  // 요기요 별점 분포 도넛
-  new Chart(document.getElementById('ygChart'), {
+  }));
+  scoreChartInstances.push(new Chart(document.getElementById('ygChart'), {
     type:'doughnut',
     data:{ labels:['5점','4점','3점','2점','1점'], datasets:[{ data:[18,10,4,1,1], backgroundColor:['#10B981','#60D394','#F59E0B','#FB923C','#EF4444'], borderWidth:0 }] },
     options:{ cutout:'65%', plugins:{ legend:{ position:'right', labels:{ font:{size:9}, color:lc, padding:6, boxWidth:10 } } } }
-  });
-
-  // 전체 별점 분포 바
-  new Chart(document.getElementById('starDistChart'), {
+  }));
+  scoreChartInstances.push(new Chart(document.getElementById('starDistChart'), {
     type:'bar',
     data:{
       labels:['⭐⭐⭐⭐⭐ 5점','⭐⭐⭐⭐ 4점','⭐⭐⭐ 3점','⭐⭐ 2점','⭐ 1점'],
@@ -2282,18 +2317,18 @@ function renderScoreCharts() {
       ]
     },
     options:{ indexAxis:'y', plugins:{ legend:{ labels:{ font:{size:9}, color:lc, boxWidth:10, padding:8 } } }, scales:{ x:{ grid:{color:gc}, ticks:{color:lc,font:{size:9}} }, y:{ grid:{display:false}, ticks:{color:lc,font:{size:9}} } } }
-  });
+  }));
 }
 
-
-let chartsRendered=false;
+let kpiChartInstances = [];
 function renderKpiCharts(){
-  if(chartsRendered)return;chartsRendered=true;
+  kpiChartInstances.forEach(function(ch){ try{ ch.destroy(); }catch(e){} });
+  kpiChartInstances = [];
   const isDark=document.documentElement.getAttribute('data-theme')==='dark';
   const gridColor=isDark?'rgba(255,255,255,.06)':'rgba(0,0,0,.06)';
   const labelColor=isDark?'#64748B':'#9CA3AF';
-  new Chart(document.getElementById('monthChart').getContext('2d'),{type:'bar',data:{labels:['9월','10월','11월','12월','1월','2월'],datasets:[{label:'리뷰 수',data:[184,201,218,246,262,284],backgroundColor:['rgba(74,108,247,.4)','rgba(74,108,247,.4)','rgba(74,108,247,.4)','rgba(74,108,247,.4)','rgba(74,108,247,.4)','rgba(74,108,247,1)'],borderRadius:8}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:gridColor},ticks:{color:labelColor,font:{size:10}}},x:{grid:{display:false},ticks:{color:labelColor,font:{size:10}}}}}});
-  new Chart(document.getElementById('starChart').getContext('2d'),{type:'doughnut',data:{labels:['5점','4점','3점','2점','1점'],datasets:[{data:[148,82,32,16,6],backgroundColor:['#10B981','#60D394','#F59E0B','#FB923C','#EF4444'],borderWidth:0}]},options:{cutout:'60%',plugins:{legend:{position:'right',labels:{font:{size:10},color:labelColor,padding:8}}}}});
+  kpiChartInstances.push(new Chart(document.getElementById('monthChart').getContext('2d'),{type:'bar',data:{labels:['9월','10월','11월','12월','1월','2월'],datasets:[{label:'리뷰 수',data:[184,201,218,246,262,284],backgroundColor:['rgba(74,108,247,.4)','rgba(74,108,247,.4)','rgba(74,108,247,.4)','rgba(74,108,247,.4)','rgba(74,108,247,.4)','rgba(74,108,247,1)'],borderRadius:8}]},options:{plugins:{legend:{display:false}},scales:{y:{grid:{color:gridColor},ticks:{color:labelColor,font:{size:10}}},x:{grid:{display:false},ticks:{color:labelColor,font:{size:10}}}}}}));
+  kpiChartInstances.push(new Chart(document.getElementById('starChart').getContext('2d'),{type:'doughnut',data:{labels:['5점','4점','3점','2점','1점'],datasets:[{data:[148,82,32,16,6],backgroundColor:['#10B981','#60D394','#F59E0B','#FB923C','#EF4444'],borderWidth:0}]},options:{cutout:'60%',plugins:{legend:{position:'right',labels:{font:{size:10},color:labelColor,padding:8}}}}}));
 }
 
 /* ══ 이벤트 모달 ══ */
